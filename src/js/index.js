@@ -1,7 +1,8 @@
 import '../scss/style.scss';
-import { Router } from './router';
+import { Router } from './lib/router';
 import { HomeComponent } from './components/home';
-import { CharactersComponent } from './components/characters'
+import { CharactersComponent } from './components/characters';
+import { DetailsComponent } from './components/details';
 
 const configureRouter = () => { 
   const router = new Router();
@@ -12,6 +13,7 @@ const configureRouter = () => {
 
   router.add(/home/, HomeComponent);
   router.add(/characters/, CharactersComponent);
+  router.add(/details\/(.*)/, DetailsComponent);
   router.listen();
   router.navigate('/home');
 

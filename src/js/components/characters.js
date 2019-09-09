@@ -1,6 +1,6 @@
 import { CharactersService } from '../services/characters';
 import { HandleError } from '../utils';
-import { MainWrapper} from '../index';
+import { MainWrapper, router} from '../index';
 
 export async function CharactersComponent() {
   try {
@@ -14,9 +14,16 @@ export async function CharactersComponent() {
 }
 
 const createComponent = data => {
-  const html = `  <div class="row">${getThumbnails(data.results)}</div>`;
+  MainWrapper.innerHTML = `<div class="row">${getThumbnails(data.results)}</div>`;
 
-  MainWrapper.innerHTML = html;
+  const charactersCollection = MainWrapper.getElementsByClassName('character');
+  const charactersArray = [...charactersCollection];
+
+  charactersArray.forEach(element => {
+    element.addEventListener('click', () => {
+      router.navigate(`/details/${element.id.split('-')[1]}`);
+    });
+  });
 }
 
 const getThumbnails = (characters) => {
@@ -24,7 +31,7 @@ const getThumbnails = (characters) => {
   characters.forEach(character => {
     result += `
       <div class="col s12 m3 l2">
-        <div class="card character">
+        <div class="card character hoverable" id="character-${character.id}">
           <div class="card-image">
             <img src="${character.image}">
           </div>
