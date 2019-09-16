@@ -12,23 +12,15 @@ export async function CharactersComponent(page) {
     const data = await response.json();
 
     createComponent(data, page);
+    setupListeners();
   } catch (error) {
     HandleError(error);
   }
-}
+};
 
 const createComponent = (data, currentPage) => {
   currentPage = parseInt(currentPage);
-  
-  if (currentPage > paginationEnd && currentPage <= data.info.pages) {
-    paginationStart = currentPage - 9;
-    paginationEnd = currentPage;
-  }
-  
-  if (currentPage < paginationStart) {
-    paginationStart = currentPage;
-    paginationEnd = currentPage + 9;
-  }
+  checkPagination(currentPage, data.info.pages);
 
   const vars = {
     characters: data.results, 
@@ -41,26 +33,34 @@ const createComponent = (data, currentPage) => {
   };
 
   MainWrapper.innerHTML = template(vars);
+};
 
-  const charactersCollection = MainWrapper.getElementsByClassName('character');
-  const charactersArray = [...charactersCollection];
-
-  charactersArray.forEach(element => {
-    element.addEventListener('click', () => {
-      router.navigate(`/details/${element.id}`);
-    });
-  });
-
-  setupPagination();
-}
-
-const setupPagination = () => {
+const setupListeners = () => {
   const links = MainWrapper.getElementsByTagName('a');
+  const charactersCollection = MainWrapper.getElementsByClassName('character');
   
   for (const link of links) {
     link.addEventListener('click', (event) => {
       event.preventDefault();
       router.navigate(link.getAttribute('href'));
     });
+  }
+
+  for (const character of charactersCollection) {
+    character.addEventListener('click', () => {
+      router.navigate(`/details/${character.id}`);
+    });
+  }
+};
+
+const checkPagination = (currentPage, totalPages) => {
+  if (currentPage > paginationEnd && currentPage <= totalPages) {
+    paginationStart = currentPage - 9;
+    paginationEnd = currentPage;
+  }
+  
+  if (currentPage < paginationStart) {
+    paginationStart = currentPage;
+    paginationEnd = currentPage + 9;
   }
 };
