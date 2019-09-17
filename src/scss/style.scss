@@ -18,10 +18,7 @@
   width: 100%;
 }
 
-.character {
-  cursor: pointer;
-
-  @media screen and (min-width: 600px) {
-    height: 320px;
-  }
+.card {
+  height: 100%;
+  margin: 0;
 }
