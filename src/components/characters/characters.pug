@@ -1,7 +1,7 @@
 app-characters
   .flex-container
     each character in characters
-      .flex-item
+      .col-xs-12.col-sm-6.col-md-4.col-lg-3
         .card.hoverable.character(id=character.id) 
           .card-image
             img(src=character.image)
@@ -21,7 +21,7 @@ app-characters
 
     - for(let i = pagination.start; i <= pagination.end; i++) {
       if i == page
-        li.cyan.darken-2
+        li.active
           a.white-text(href=`/characters/${i}`) #{i}
       else
         li.waves-effect

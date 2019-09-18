@@ -1,9 +1,10 @@
 app-details
   .flex-container
-    .flext-item
-      h4 #{character.name}
-      img(src=character.image)
-    .flex-item
+    .col-xs-12.col-sm-6.col-md-4
+      .image-container
+        h4 #{character.name}
+        img(src=character.image)
+    .col-xs-12.col-sm-6.col-md-8
       h4 Character Data
       .collection
         .collection-item
