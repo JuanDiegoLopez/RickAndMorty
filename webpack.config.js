@@ -28,12 +28,15 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015']
-          }
-        }
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015']
+            }
+          },
+          'eslint-loader'
+        ]
       },
       {
         test: /\.css$/,

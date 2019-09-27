@@ -1,10 +1,20 @@
-import { CharactersService } from '../../services/characters'
-import { HandleError } from '../../utils';
-import { MainWrapper, router} from '../../index';
+import CharactersService from '../../services/characters';
+import { elements, HandleError } from '../../utils';
+import router from '../../router';
+
 import template from './home.pug';
 import './home.scss';
 
-export async function HomeComponent() {
+const createComponent = (characters) => {
+  elements.content.innerHTML = template({ characters });
+
+  const button = elements.content.querySelector('.btn');
+  button.addEventListener('click', () => {
+    router.navigate('/characters/1');
+  });
+};
+
+const HomeComponent = async () => {
   try {
     const response = await CharactersService.getMainCharacters();
     const data = await response.json();
@@ -13,13 +23,6 @@ export async function HomeComponent() {
   } catch (error) {
     HandleError(error);
   }
-}
+};
 
-const createComponent = characters => {
-  MainWrapper.innerHTML = template({ characters });
-
-  const button = MainWrapper.querySelector('.btn');
-  button.addEventListener('click', () => {
-    router.navigate('/characters/1');
-  });
-}
+export default HomeComponent;
