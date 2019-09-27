@@ -1,9 +1,9 @@
-import './scss/style.scss';
-import './scss/grid.scss';
-import Logo from './assets/logo.png';
+import '../scss/style.scss';
+import '../scss/grid.scss';
+import Logo from '../assets/logo.png';
 
-import { elements } from './utils';
-import router from './router';
+import { elements } from '../utils';
+import router from '../router';
 
 import CharactersComponent from './components/characters/characters';
 import DetailsComponent from './components/details/details';

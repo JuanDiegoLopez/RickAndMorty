@@ -1,6 +1,6 @@
-import CharactersService from '../../services/characters';
-import { elements, HandleError } from '../../utils';
-import router from '../../router';
+import CharactersService from '../../../services/characters';
+import { elements, HandleError } from '../../../utils';
+import router from '../../../router';
 
 import template from './home.pug';
 import './home.scss';

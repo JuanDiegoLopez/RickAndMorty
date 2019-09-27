@@ -1,4 +1,4 @@
-import Router from '../lib/Router';
+import Router from './lib/Router';
 
 const router = new Router();
 

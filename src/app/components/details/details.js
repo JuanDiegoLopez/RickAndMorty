@@ -1,8 +1,8 @@
 import template from './details.pug';
 import './details.scss';
 
-import { elements, HandleError } from '../../utils';
-import CharactersService from '../../services/characters';
+import { elements, HandleError } from '../../../utils';
+import CharactersService from '../../../services/characters';
 
 class DetailsComponent {
   constructor(id) {
