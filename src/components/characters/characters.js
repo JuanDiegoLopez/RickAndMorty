@@ -5,67 +5,73 @@ import { HandleError, elements } from '../../utils';
 import router from '../../router';
 import CharactersService from '../../services/characters';
 
-let paginationStart = 1;
-let paginationEnd = 10;
-
-const checkPagination = (currentPage, totalPages) => {
-  if (currentPage > paginationEnd && currentPage <= totalPages) {
-    paginationStart = currentPage - 9;
-    paginationEnd = currentPage;
+class CharactersComponent {
+  constructor(page) {
+    this.page = page;
+    this.paginationStart = 1;
+    this.paginationEnd = 10;
+    this.router = router;
   }
 
-  if (currentPage < paginationStart) {
-    paginationStart = currentPage;
-    paginationEnd = currentPage + 9;
+  async createComponent() {
+    try {
+      const response = await CharactersService.getAllCharacters(this.page);
+      const data = await response.json();
+
+      this.render(data, this.page);
+      this.setupListeners();
+    } catch (error) {
+      HandleError(error);
+    }
   }
-};
 
-const createComponent = (data, currentPage) => {
-  const currentPageParsed = parseInt(currentPage, 10);
-  checkPagination(currentPage, data.info.pages);
+  checkPagination(currentPage, totalPages) {
+    if (currentPage > this.paginationEnd && currentPage <= totalPages) {
+      this.paginationStart = currentPage - 9;
+      this.paginationEnd = currentPage;
+    }
 
-  const vars = {
-    characters: data.results,
-    pagination: {
-      current: currentPageParsed,
-      total: data.info.pages,
-      start: paginationStart,
-      end: paginationEnd,
-    },
-  };
+    if (currentPage < this.paginationStart) {
+      this.paginationStart = currentPage;
+      this.paginationEnd = currentPage + 9;
+    }
+  }
 
-  elements.content.innerHTML = template(vars);
-  elements.content.style.cssText = style;
-};
+  render(data, currentPage) {
+    const currentPageParsed = parseInt(currentPage, 10);
+    this.checkPagination(currentPage, data.info.pages);
 
-const setupListeners = () => {
-  const links = elements.content.getElementsByTagName('a');
-  const characters = elements.content.getElementsByClassName('character');
+    const vars = {
+      characters: data.results,
+      pagination: {
+        current: currentPageParsed,
+        total: data.info.pages,
+        start: this.paginationStart,
+        end: this.paginationEnd,
+      },
+    };
 
-  Array.from(links).forEach((link) => {
-    link.addEventListener('click', (event) => {
-      event.preventDefault();
-      router.navigate(link.getAttribute('href'));
+    elements.content.innerHTML = template(vars);
+    elements.content.style.cssText = style;
+  }
+
+  setupListeners() {
+    const linksElements = Array.from(elements.content.getElementsByTagName('a'));
+    const charactersElements = Array.from(elements.content.getElementsByClassName('character'));
+
+    linksElements.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        this.router.navigate(link.getAttribute('href'));
+      });
     });
-  });
 
-  Array.from(characters).forEach((character) => {
-    character.addEventListener('click', () => {
-      router.navigate(`/details/${character.id}`);
+    charactersElements.forEach((character) => {
+      character.addEventListener('click', () => {
+        this.router.navigate(`/details/${character.id}`);
+      });
     });
-  });
-};
-
-const CharactersComponent = async (page) => {
-  try {
-    const response = await CharactersService.getAllCharacters(page);
-    const data = await response.json();
-
-    createComponent(data, page);
-    setupListeners();
-  } catch (error) {
-    HandleError(error);
   }
-};
+}
 
 export default CharactersComponent;
