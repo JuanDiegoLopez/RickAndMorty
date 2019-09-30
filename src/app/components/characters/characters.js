@@ -1,9 +1,9 @@
+import { HandleError, elements } from 'src/utils';
+import CharactersService from 'services/characters';
+import router from 'src/router';
+
 import template from './characters.pug';
 import style from './characters.scss';
-
-import { HandleError, elements } from '../../../utils';
-import router from '../../../router';
-import CharactersService from '../../../services/characters';
 
 class CharactersComponent {
   constructor(page) {
